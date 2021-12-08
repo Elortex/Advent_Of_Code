@@ -11,9 +11,9 @@ for reading in sys.stdin:
     if reading == '\n': break
     tempList.pop(0)
     tempList.append(int(reading))
+    
     sumsList.append(sum(tempList))
-
-for i in range(1, len(sumsList)):
-    if sumsList[i] > sumsList[i-1]: noOfIncrm += 1
+    if sumsList[1] > sumsList[0]: noOfIncrm += 1
+    sumsList.pop(0)
 
 print(noOfIncrm)
