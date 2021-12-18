@@ -2,7 +2,6 @@ import sys
 
 oxGenRat = []
 co2ScrubRat = []
-tempReadingsList = []
 
 digitStack = 0
 for diagnReading in sys.stdin:
