@@ -1,6 +1,5 @@
 import sys
 
-DIAGNOSTC_LEN = 12
 oxGenRat = []
 co2ScrubRat = []
 tempReadingsList = []
@@ -22,35 +21,42 @@ else:
     leastCommon = '0'
 
 
-oxGenDigitStack = 0
-co2ScrubDigitStack = 0
 for digitNo in range(1, len(oxGenRat[0]) - 1):
-    
+    oxGenDigitStack = 0
+    co2ScrubDigitStack = 0
+
     for i in range(len(oxGenRat)):
-        print(i, ' ', digitNo)
-        if i == len(oxGenRat): break
-        if oxGenRat[i][digitNo - 1] != mostCommon:
+        
+        while i < len(oxGenRat) and oxGenRat[i][digitNo - 1] != mostCommon:
+            if len(oxGenRat) == 1: break
             oxGenRat.pop(i)
-            continue
-        else:
-            if oxGenRat[i][digitNo] == '1': oxGenDigitStack += 1
-            else: oxGenDigitStack -= 1
-    if oxGenDigitStack > 0: mostCommon = '1'
-    else: mostCommon = '0'
 
-    for j in range(len(co2ScrubRat) - 1):
-        if j == len(co2ScrubRat): break
-        if co2ScrubRat[j][digitNo - 1] != leastCommon: 
+        if i >= len(oxGenRat): break
+        if oxGenRat[i][digitNo] == '1': oxGenDigitStack += 1
+        else: oxGenDigitStack -= 1
+    if oxGenDigitStack < 0: mostCommon = '0'
+    else: mostCommon = '1'
+
+    for j in range(len(co2ScrubRat)):
+        
+        while j < len(co2ScrubRat) and co2ScrubRat[j][digitNo - 1] != leastCommon:
+            if len(co2ScrubRat) == 1: break
             co2ScrubRat.pop(j)
-            continue
-        else:
-            if co2ScrubRat[j][digitNo] == '1': co2ScrubDigitStack += 1
-            else: co2ScrubDigitStack -= 1
-    if co2ScrubDigitStack > 0: leastCommon = '0'
-    else: leastCommon = '1'
+            
+        if j >= len(co2ScrubRat): break
+        if co2ScrubRat[j][digitNo] == '1': co2ScrubDigitStack += 1
+        else: co2ScrubDigitStack -= 1
+    if co2ScrubDigitStack < 0: leastCommon = '1'
+    else: leastCommon = '0'
 
-#oxRatingConv = int(''.join(oxGenRat), 2)
-#co2RatingConv = int(''.join(co2ScrubRat), 2)
 
-#print(oxRatingConv*co2RatingConv)
-print(oxGenRat, co2ScrubRat)
+if oxGenRat[0][-2] == '1': oxGenRes = oxGenRat[0]
+else: oxGenRes = oxGenRat[1]
+
+if co2ScrubRat[0][-2] == '0': co2ScrubRes = co2ScrubRat[0]
+else: co2ScrubRes = co2ScrubRat[1]
+
+oxGenRes = int(''.join(oxGenRes), 2)
+co2ScrubRes = int(''.join(co2ScrubRes), 2)
+
+print(oxGenRes*co2ScrubRes)
